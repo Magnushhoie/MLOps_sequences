@@ -77,13 +77,13 @@ class PredictionModel(LightningModule):
         # Reset confusion matrix so it is recalculated for next epoch
         confmat.reset()
 
-    def training_step(self, batch: torch.Tensor) -> torch.Tensor:
+    def training_step(self, batch: torch.Tensor, batch_idx) -> torch.Tensor:
         return self.step(batch, "training")
 
     def training_epoch_end(self, outputs: torch.Tensor) -> None:
         self.epoch_end("training")
 
-    def validation_step(self, batch: torch.Tensor) -> torch.Tensor:
+    def validation_step(self, batch: torch.Tensor, batch_idx) -> torch.Tensor:
         return self.step(batch, "validation")
 
     def validation_epoch_end(self, outputs: torch.Tensor) -> None:
