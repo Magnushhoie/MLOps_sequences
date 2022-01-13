@@ -28,6 +28,11 @@ jobs:
           pip install -r requirements.txt
           pip install -r tests/requirements.txt
 
+      - name: Check order of imports
+        uses: isort/isort-action@master
+        with:
+            configuration: "--check-only"
+
       - name: Lint with flake8
         run: |
           flake8 . --exit-zero --max-complexity=10 --max-line-length=80
