@@ -1,9 +1,10 @@
 __all__ = ["PerResidueModel"]
 
 import torch
+from pytorch_lightning import LightningModule
 from torch import nn
 from torchmetrics import ConfusionMatrix
-from pytorch_lightning import LightningModule
+
 from src.models.cnn.layers import ConvBlock, Transpose
 
 
