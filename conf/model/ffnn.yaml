@@ -1,0 +1,4 @@
+# Default configuration of the fixed-length FFNN model
+
+# Model class to initialize
+_target_: src.models.FixedLengthModel

@@ -1,0 +1,13 @@
+# @package _global_
+
+# Example configuration of another experiment
+
+defaults:
+  - override /model: ffnn.yaml  # Load default FFNN config instead of CNN
+
+seed: 42
+name: "test_ffnn"
+
+training:
+  max_epochs: 10
+  precision: 16  # Reduces memory footprint during training
