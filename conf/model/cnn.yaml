@@ -1,0 +1,8 @@
+# Default configuration of the per-residue CNN model
+
+# Model class to initialize
+_target_: src.models.PerResidueModel
+
+# Default parameters to initialize class with
+lr: 0.001
+weight_decay: 0

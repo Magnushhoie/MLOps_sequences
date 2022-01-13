@@ -1,0 +1,11 @@
+# Default configuration of the training loop
+
+# Trainer object class
+_target_: pytorch_lightning.Trainer
+
+# See <https://pytorch-lightning.readthedocs.io/en/latest/common/trainer.html>
+# for a full list of configurable parameters
+
+check_val_every_n_epoch: 4
+max_epochs: 100
+precision: 32
