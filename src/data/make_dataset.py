@@ -7,6 +7,7 @@ from pathlib import Path
 
 import click
 from Bio import SeqIO
+import subprocess
 from dotenv import find_dotenv, load_dotenv
 
 
@@ -69,9 +70,9 @@ def main(input_filepath, interim_filepath, output_filepath):
 
     # Run ESM pipeline
     #call("${PYTHON_INTERPRETER} -u " + "src/data/extract.py " + "", shell=True)
-    script="../src/data/run_esm.sh"
-    os.chmod(script, 0o755)
-    subprocess.Popen(script)
+    script="src/data/run_esm.sh"
+    # os.chmod(script, 0o755)
+    subprocess.call(script)
 
     # Open ESM .pt files, put sequences and labels inside
     # ....
