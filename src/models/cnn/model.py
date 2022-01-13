@@ -33,6 +33,17 @@ class PerResidueModel(LightningModule):
         )
 
     def step(self, batch: torch.Tensor, mode: str) -> torch.Tensor:
+        """Computes loss and updates the confusion matrix at every step.
+
+        Parameters
+        ----------
+        batch : torch.Tensor
+        mode : {'training', 'validation'}
+
+        Returns
+        -------
+        loss : torch.Tensor
+        """
         # Do forward pass
         x, y = batch
         logits = self(x)
@@ -50,6 +61,12 @@ class PerResidueModel(LightningModule):
         return loss
 
     def epoch_end(self, mode: str) -> None:
+        """Computes and logs confusion matrix at end of every epoch.
+
+        Parameters
+        ----------
+        mode : {'training', 'validation'}
+        """
         # Compute confusion matrix from epoch's outputs
         confmat = getattr(self, f"{mode}_confmat")
         tn, fp, fn, tp = confmat.compute().view(-1)
