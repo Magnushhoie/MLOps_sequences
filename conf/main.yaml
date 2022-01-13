@@ -1,0 +1,15 @@
+# @package _global_
+
+# Main config file, references default training/model configuration, which can
+# be overriden by an experiment config file.
+
+# Note: The ´@package _global_´ line is essential for this override to happen!
+
+defaults:
+  - _self_  # Also needed so this config is overriden by all the others
+  - training: default.yaml  # Defines default training hyperparameters
+  - model: cnn.yaml  # Defines default model hyperparameters
+  - experiment: null
+
+seed: null
+name: null

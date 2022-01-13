@@ -82,6 +82,9 @@ target/
 # exclude data from source control by default
 /data/
 
+# exclude Hydra outputs from source control
+/outputs/
+
 # Mac OS-specific storage files
 .DS_Store
 

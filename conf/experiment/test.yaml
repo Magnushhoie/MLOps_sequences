@@ -1,0 +1,15 @@
+# @package _global_
+
+# Example configuration of a specific experiment. Values specified here will
+# override any defaults set in the ´main.yaml´
+
+seed: 42
+name: "test"
+
+training:
+  max_epochs: 10
+  precision: 16  # Reduces memory footprint during training
+
+model:
+  lr: 0.01
+  weight_decay: 1e-4

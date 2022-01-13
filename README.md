@@ -40,6 +40,13 @@ Project Organization
     ├── LICENSE
     ├── Makefile           <- Makefile with commands like `make data` or `make train`
     ├── README.md          <- The top-level README for developers using this project.
+    ├── conf
+    │   ├── main.yaml      <- Main default configuration file.
+    │   │
+    │   ├── experiment     <- Experiment overrides to any default configuration.
+    │   ├── model          <- Default model configuration.
+    │   └── training       <- Default training loop configuration.
+    │
     ├── data
     │   ├── external       <- Data from third party sources.
     │   ├── interim        <- Intermediate data that has been transformed.

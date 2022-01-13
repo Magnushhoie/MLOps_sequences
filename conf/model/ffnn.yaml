@@ -1,0 +1,9 @@
+# Default configuration of the fixed-length FFNN model
+
+# Model class to initialize
+_target_: src.models.FixedLengthModel
+
+# Default parameters to initialize class with
+num_hidden: 15
+lr: 0.001
+weight_decay: 0
