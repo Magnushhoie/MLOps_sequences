@@ -5,6 +5,7 @@ from torch import nn
 
 from src.models.base.model import PredictionModel
 
+
 class FixedLengthModel(PredictionModel):
     def __init__(self, num_hidden: int, lr: float, weight_decay: float):
         super().__init__()
