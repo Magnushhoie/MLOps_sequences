@@ -1,11 +1,13 @@
 # -*- coding: utf-8 -*-
-import click
+import argparse
+import glob
 import logging
+import os
 from pathlib import Path
-from dotenv import find_dotenv, load_dotenv
 
+import click
 from Bio import SeqIO
-import argparse, os, glob
+from dotenv import find_dotenv, load_dotenv
 
 
 def de_duplicate_FASTA_files(inDir="data/raw/", outDir="data/interim/", v=1):
