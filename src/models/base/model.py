@@ -7,7 +7,8 @@ from torchmetrics import ConfusionMatrix
 
 
 class PredictionModel(LightningModule):
-    """Base class for prediction models, defines logic at each training step/epoch."""
+    """Base class for prediction models, defines logic at each training step and
+    epoch."""
     def __init__(self):
         super().__init__()
         self.training_confmat = ConfusionMatrix(num_classes=2)
@@ -15,7 +16,9 @@ class PredictionModel(LightningModule):
 
     def configure_optimizers(self) -> torch.optim.Optimizer:
         return torch.optim.Adam(
-            self.parameters(), weight_decay=self.weight_decay, lr=self.lr
+            self.parameters(),
+            weight_decay=self.hparams.weight_decay,
+            lr=self.hparams.lr
         )
 
     def step(self, batch: torch.Tensor, mode: str) -> torch.Tensor:
@@ -43,7 +46,9 @@ class PredictionModel(LightningModule):
         getattr(self, f"{mode}_confmat")(preds, y)
 
         # Log loss at every step
-        self.log(f"{mode}_loss", loss, on_step=True, on_epoch=True, prog_bar=True)
+        self.log(
+            f"{mode}_loss", loss, on_step=True, on_epoch=True, prog_bar=True
+        )
         return loss
 
     def epoch_end(self, mode: str) -> None:
