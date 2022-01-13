@@ -11,5 +11,5 @@ defaults:
   - model: cnn.yaml  # Defines default model hyperparameters
   - experiment: null
 
-seed: 1
+seed: null
 name: null

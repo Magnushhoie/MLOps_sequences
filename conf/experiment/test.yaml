@@ -3,6 +3,7 @@
 # Example configuration of a specific experiment. Values specified here will
 # override any defaults set in the ´main.yaml´
 
+seed: 42
 name: "test"
 
 training:
