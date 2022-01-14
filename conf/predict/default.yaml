@@ -1,0 +1,4 @@
+# Configuration of the prediction
+# The model needs to be provided
+
+load_from_model: 'almon/MLOps_Sequences/model-3cultlh3:v0'
