@@ -1,4 +1,5 @@
 from pathlib import Path
+import os
 
 import hydra
 import wandb
@@ -8,8 +9,8 @@ from pytorch_lightning import seed_everything
 from pytorch_lightning.loggers import WandbLogger
 
 # Automagically find path to config files
-CONF_PATH = Path(find_dotenv(), "..", "conf").as_posix()
-
+#CONF_PATH = Path(find_dotenv(), "../..", "conf").as_posix()
+CONF_PATH = Path(os.getcwd(),"conf")
 
 @hydra.main(config_path=CONF_PATH, config_name="main")
 def train(config: DictConfig):
@@ -48,7 +49,7 @@ def train(config: DictConfig):
     val_dataloader = get_dummy_dataloader(100)
 
     # Initialize logger
-    logger = WandbLogger(name=config.name, project="MLOps_Sequences", log_model=False)
+    logger = WandbLogger(name=config.name, project="MLOps_Sequences", log_model=True)
 
     # Initialize model
     model = hydra.utils.instantiate(config.model)
