@@ -57,13 +57,13 @@ def predict(config: DictConfig):
     # Download model checkpoint
     run = wandb.init()
     # CKPT_PATH = Path(os.get.cwd)
-    artifact = run.use_artifact(config.load_from_model) 
+    artifact = run.use_artifact(config.predict.load_from_model) 
     artifact_dir = artifact.download()
 
     # Load model checkpoint
     model = model.load_from_checkpoint(Path(artifact_dir, "model.ckpt"))
 
-    trainer = hydra.utils.instantiate(config.training, deterministic=deterministic, logger=logger)
+    trainer = hydra.utils.instantiate(config.predict, deterministic=deterministic, logger=logger)
     trainer.test(model, test_dataloader)
 
     # Finish
