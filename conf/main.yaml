@@ -9,8 +9,8 @@ defaults:
   - _self_  # Also needed so this config is overriden by all the others
   - training: default.yaml  # Defines default training hyperparameters
   - model: cnn.yaml  # Defines default model hyperparameters
+  - predict: default.yaml
   - experiment: null
 
 seed: null
 name: null
-load_from_model: 'almon/MLOps_Sequences/model-3cultlh3:v0'
