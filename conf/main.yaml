@@ -13,7 +13,6 @@ defaults:
   - experiment: null
   - search: null  # Defines sweeping configuration
 
-batch_size: 32
-seed: null
-name: null
+seed: 42
+name: mlops_peps
 test_after_train: True

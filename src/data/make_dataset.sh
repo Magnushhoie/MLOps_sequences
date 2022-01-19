@@ -15,4 +15,4 @@ chmod +x src/data/2_embed_sequences_esm.sh
 ./src/data/2_embed_sequences_esm.sh "$interimDir/" $esm_model
 
 echo -e "\n3. PCA-reduce and prepare final torch .pt files for each sequence+embedding+label"
-python src/data/3_process_embedded_sequences.py
+python src/data/3_make_dataset.py

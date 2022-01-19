@@ -8,9 +8,11 @@ from omegaconf import DictConfig
 from pytorch_lightning import LightningModule, seed_everything, Trainer
 from pytorch_lightning.loggers import WandbLogger
 
+from src.path import CONF_PATH, WEIGHTS_PATH
+
 # Automagically find path to config files
 #CONF_PATH = Path(find_dotenv(), "../..", "conf").as_posix()
-CONF_PATH = Path(os.getcwd(),"conf")
+# CONF_PATH = Path(os.getcwd(),"conf")
 
 @hydra.main(config_path=CONF_PATH, config_name="main")
 def train(config: DictConfig) -> float:

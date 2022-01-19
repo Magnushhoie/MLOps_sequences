@@ -90,41 +90,15 @@ class PredictionModel(LightningModule):
     def validation_epoch_end(self, outputs: torch.Tensor) -> None:
         self.epoch_end("validation")
 
-    # def t_step(self, batch: torch.Tensor, mode: str) -> torch.Tensor:
-    #     # # Do forward pass
-    #     # x, y = batch
-    #     # logits = self(x)
 
-    #     # # Calculate loss and predictions
-    #     # criterion = nn.BCEWithLogitsLoss()
-    #     # loss = criterion(logits, y.float())  # Must be float
-    #     # preds = (logits > 0.5).int()  # Must be int
-
-    #     confmat = getattr(self, f"{mode}_confmat")
-    #     tn, fp, fn, tp = confmat.compute().view(-1)
-
-    #     # Compute accuracy, recall, precision and F1 score
-    #     accuracy = (tn + tp) / (tn + fp + fn + tp)
-    #     recall = tp / (tp + fn)
-    #     precision = tp / (tp + fp)
-    #     f1 = 2 * (precision * recall) / (precision + recall)
-
-    #     # Log metrics
-    #     self.log(f"{mode}_accuracy", accuracy)
-    #     self.log(f"{mode}_recall", recall)
-    #     self.log(f"{mode}_precision", precision)
-    #     self.log(f"{mode}_f1", f1)
-
-    # def test_step(self, batch: torch.Tensor, batch_idx) -> torch.Tensor:
-    #     return self.t_step(batch, "test")
-
-    def test_step(self, batch, batch_idx):
+    def test_step(self, batch: torch.Tensor, batch_idx):
         x, y = batch
         logits = self(x)
         criterion = nn.BCEWithLogitsLoss()
         loss = criterion(logits, y.float())
         preds = (logits > 0.5).int()
         self.log("test_loss", loss)
+        
         mode='test'
         confmat = getattr(self, f"{mode}_confmat")(preds, y)
         tn, fp, fn, tp = confmat.view(-1)
@@ -136,10 +110,10 @@ class PredictionModel(LightningModule):
         f1 = 2 * (precision * recall) / (precision + recall)
 
         # Log metrics
-        self.log(f"{mode}_accuracy", accuracy)
-        self.log(f"{mode}_recall", recall)
-        self.log(f"{mode}_precision", precision)
-        self.log(f"{mode}_f1", f1)
+        self.log(f"{mode}_accuracy", accuracy, on_step=True, on_epoch=False)
+        self.log(f"{mode}_recall", recall, on_step=True, on_epoch=False)
+        self.log(f"{mode}_precision", precision, on_step=True, on_epoch=False)
+        self.log(f"{mode}_f1", f1, on_step=True, on_epoch=False)
 
 
 
