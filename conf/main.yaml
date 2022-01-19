@@ -12,6 +12,6 @@ defaults:
   - predict: default.yaml
   - experiment: null
 
-seed: null
-name: null
+seed: 42
+name: mlops_peps
 test_after_train: True
