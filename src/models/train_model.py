@@ -26,6 +26,10 @@ def train(config: DictConfig) -> float:
     From command line:
 
     $ python src/models/train_model.py experiment=test
+
+    If you want to run a hyperparameter sweep:
+
+    $ python src/models/train_model.py experiment=test search=optuna --multirun
     """
     # Set seed to ensure reproducibility
     deterministic = config.seed is not None
