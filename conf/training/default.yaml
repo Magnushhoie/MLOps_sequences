@@ -7,5 +7,5 @@ _target_: pytorch_lightning.Trainer
 # for a full list of configurable parameters
 
 check_val_every_n_epoch: 4
-max_epochs: 5
+max_epochs: 10
 precision: 32

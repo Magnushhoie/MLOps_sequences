@@ -22,7 +22,7 @@ class ConvBlock(nn.Module):
             nn.BatchNorm1d(num_features=60),
             nn.LeakyReLU(),
             nn.MaxPool1d(kernel_size=2),
-            nn.Dropout(p=0.55),
+            nn.Dropout(p=0.3),
         )
         nn.init.kaiming_uniform_(self.layers[0].weight)
 

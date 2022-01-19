@@ -16,3 +16,4 @@ defaults:
 seed: 42
 name: mlops_peps
 test_after_train: True
+batch_size: 64
