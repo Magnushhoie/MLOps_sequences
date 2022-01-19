@@ -14,3 +14,4 @@ defaults:
 
 seed: null
 name: null
+test_after_train: True

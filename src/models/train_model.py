@@ -47,6 +47,8 @@ def train(config: DictConfig):
     
     train_dataloader = get_dummy_dataloader(400)
     val_dataloader = get_dummy_dataloader(100)
+    if config.test_after_train:
+        test_dataloader = get_dummy_dataloader(50)
 
     # Initialize logger
     logger = WandbLogger(name=config.name, project="MLOps_Sequences", log_model=True)
@@ -57,6 +59,9 @@ def train(config: DictConfig):
     # Initialize trainer
     trainer = hydra.utils.instantiate(config.training, deterministic=deterministic, logger=logger)
     trainer.fit(model, train_dataloader, val_dataloader)
+
+    if config.test_after_train:
+        trainer.test(model, test_dataloader)
 
     # Finish
     wandb.finish()
