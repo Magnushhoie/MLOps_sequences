@@ -33,6 +33,10 @@ requirements_test:
 data: requirements
 	sh src/data/make_dataset.sh data/raw data/interim data/processed
 
+## Make training
+train: requirements
+	$(PYTHON_INTERPRETER) src/models/train_model.py
+
 ## Delete all compiled Python files
 clean:
 	find . -type f -name "*.py[co]" -delete
