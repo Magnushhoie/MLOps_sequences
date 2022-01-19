@@ -120,32 +120,5 @@ class PredictionModel(LightningModule):
     def test_epoch_end(self, outputs: torch.Tensor) -> None:
         self.epoch_end("test")
 
-    
-
-
-    # def test_step(self, batch: torch.Tensor, batch_idx):
-    #     x, y = batch
-    #     logits = self(x)
-    #     criterion = nn.BCEWithLogitsLoss()
-    #     y = y.unsqueeze(1)
-    #     loss = criterion(logits, y.float())
-    #     preds = (logits > 0.5).int()
-    #     self.log("test_loss", loss)
-        
-    #     mode='test'
-    #     confmat = getattr(self, f"{mode}_confmat")(preds, y)
-    #     tn, fp, fn, tp = confmat.view(-1)
-
-    #     # Compute accuracy, recall, precision and F1 score
-    #     accuracy = (tn + tp) / (tn + fp + fn + tp)
-    #     recall = tp / (tp + fn)
-    #     precision = tp / (tp + fp)
-
-    #     # Log metrics
-    #     self.log(f"{mode}_accuracy", accuracy, on_step=True, on_epoch=False)
-    #     self.log(f"{mode}_recall", recall, on_step=True, on_epoch=False)
-    #     self.log(f"{mode}_precision", precision, on_step=True, on_epoch=False)
-
-
 
 
