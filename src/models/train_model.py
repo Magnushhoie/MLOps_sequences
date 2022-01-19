@@ -1,18 +1,15 @@
-from pathlib import Path
-import os
-
 import hydra
 import wandb
-from dotenv import find_dotenv
 from omegaconf import DictConfig
-from pytorch_lightning import LightningModule, seed_everything, Trainer
+from pytorch_lightning import LightningModule, Trainer, seed_everything
 from pytorch_lightning.loggers import WandbLogger
 
-from src.path import CONF_PATH, WEIGHTS_PATH
+from src.path import CONF_PATH
 
 # Automagically find path to config files
-#CONF_PATH = Path(find_dotenv(), "../..", "conf").as_posix()
+# CONF_PATH = Path(find_dotenv(), "../..", "conf").as_posix()
 # CONF_PATH = Path(os.getcwd(),"conf")
+
 
 @hydra.main(config_path=CONF_PATH, config_name="main")
 def train(config: DictConfig) -> float:
@@ -50,7 +47,7 @@ def train(config: DictConfig) -> float:
         targets = (torch.randn(num_samples, 1) > 0.5).int()
         dataset = TensorDataset(inputs, targets)
         return DataLoader(dataset, batch_size=config.batch_size)
-    
+
     train_dataloader = get_dummy_dataloader(400)
     val_dataloader = get_dummy_dataloader(100)
     if config.test_after_train:
@@ -63,7 +60,9 @@ def train(config: DictConfig) -> float:
     model: LightningModule = hydra.utils.instantiate(config.model)
 
     # Initialize trainer
-    trainer: Trainer = hydra.utils.instantiate(config.training, deterministic=deterministic, logger=logger)
+    trainer: Trainer = hydra.utils.instantiate(
+        config.training, deterministic=deterministic, logger=logger
+    )
     trainer.fit(model, train_dataloader, val_dataloader)
 
     # Retrieve score (required if sweeping)
@@ -78,6 +77,7 @@ def train(config: DictConfig) -> float:
     if score is not None:
         return score.item()
     return None
+
 
 if __name__ == "__main__":
     train()

@@ -9,6 +9,7 @@ from torchmetrics import ConfusionMatrix
 class PredictionModel(LightningModule):
     """Base class for prediction models, defines logic at each training step and
     epoch."""
+
     def __init__(self):
         super().__init__()
         self.training_confmat = ConfusionMatrix(num_classes=2)
@@ -19,7 +20,7 @@ class PredictionModel(LightningModule):
         return torch.optim.Adam(
             self.parameters(),
             weight_decay=self.hparams.weight_decay,
-            lr=self.hparams.lr
+            lr=self.hparams.lr,
         )
 
     def step(self, batch: torch.Tensor, mode: str) -> torch.Tensor:
@@ -47,9 +48,7 @@ class PredictionModel(LightningModule):
         getattr(self, f"{mode}_confmat")(preds, y)
 
         # Log loss at every step
-        self.log(
-            f"{mode}_loss", loss, on_step=True, on_epoch=True, prog_bar=True
-        )
+        self.log(f"{mode}_loss", loss, on_step=True, on_epoch=True, prog_bar=True)
         return loss
 
     def epoch_end(self, mode: str) -> None:
@@ -90,7 +89,6 @@ class PredictionModel(LightningModule):
     def validation_epoch_end(self, outputs: torch.Tensor) -> None:
         self.epoch_end("validation")
 
-
     def test_step(self, batch: torch.Tensor, batch_idx):
         x, y = batch
         logits = self(x)
@@ -98,8 +96,8 @@ class PredictionModel(LightningModule):
         loss = criterion(logits, y.float())
         preds = (logits > 0.5).int()
         self.log("test_loss", loss)
-        
-        mode='test'
+
+        mode = "test"
         confmat = getattr(self, f"{mode}_confmat")(preds, y)
         tn, fp, fn, tp = confmat.view(-1)
 
@@ -114,7 +112,3 @@ class PredictionModel(LightningModule):
         self.log(f"{mode}_recall", recall, on_step=True, on_epoch=False)
         self.log(f"{mode}_precision", precision, on_step=True, on_epoch=False)
         self.log(f"{mode}_f1", f1, on_step=True, on_epoch=False)
-
-
-
-
