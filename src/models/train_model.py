@@ -1,10 +1,13 @@
+import pathlib
 import hydra
 import wandb
+from pathlib import Path
 from omegaconf import DictConfig
-from pytorch_lightning import LightningModule, Trainer, seed_everything
+from pytorch_lightning import LightningModule, seed_everything, Trainer
+from pytorch_lightning.callbacks import ModelCheckpoint
 from pytorch_lightning.loggers import WandbLogger
 
-from src.path import CONF_PATH
+from src.path import ROOT_PATH, CONF_PATH, WEIGHTS_PATH
 
 # Automagically find path to config files
 # CONF_PATH = Path(find_dotenv(), "../..", "conf").as_posix()
@@ -47,11 +50,15 @@ def train(config: DictConfig) -> float:
         targets = (torch.randn(num_samples, 1) > 0.5).int()
         dataset = TensorDataset(inputs, targets)
         return DataLoader(dataset, batch_size=config.batch_size)
+    
+    train_dataset = torch.load(Path(ROOT_PATH, "data/processed/trainset.pt"))
+    valid_dataset = torch.load(Path(ROOT_PATH, "data/processed/validset.pt"))
+    train_dataloader = DataLoader(train_dataset, batch_size=config.batch_size, num_workers=8)
+    valid_dataloader = DataLoader(valid_dataset, batch_size=config.batch_size, num_workers=8)
 
-    train_dataloader = get_dummy_dataloader(400)
-    val_dataloader = get_dummy_dataloader(100)
     if config.test_after_train:
-        test_dataloader = get_dummy_dataloader(50)
+        test_dataset = torch.load(Path(ROOT_PATH, "data/processed/testset.pt"))
+        test_dataloader = DataLoader(test_dataset, batch_size=config.batch_size, num_workers=8)
 
     # Initialize logger
     logger = WandbLogger(name="optuna", project="MLOps_Sequences", log_model=True)
@@ -59,11 +66,23 @@ def train(config: DictConfig) -> float:
     # Initialize model
     model: LightningModule = hydra.utils.instantiate(config.model)
 
+    checkpoint_callback = ModelCheckpoint(
+        monitor='validation_loss_epoch', 
+        save_on_train_epoch_end=True,
+        dirpath=WEIGHTS_PATH,
+        filename='cnn_model'
+    )
+
     # Initialize trainer
     trainer: Trainer = hydra.utils.instantiate(
-        config.training, deterministic=deterministic, logger=logger
-    )
-    trainer.fit(model, train_dataloader, val_dataloader)
+        config.training, 
+        deterministic=deterministic, 
+        logger=logger, 
+        weights_save_path=WEIGHTS_PATH
+        # callbacks=[checkpoint_callback]
+        )
+
+    trainer.fit(model, train_dataloader, valid_dataloader)
 
     # Retrieve score (required if sweeping)
     score = trainer.callback_metrics.get(config.get("objective"))
