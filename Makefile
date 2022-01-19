@@ -25,6 +25,10 @@ requirements: test_environment
 	$(PYTHON_INTERPRETER) -m pip install -U pip setuptools wheel
 	$(PYTHON_INTERPRETER) -m pip install -r requirements.txt
 
+requirements_test: 
+	$(PYTHON_INTERPRETER) -m pip install -U pip setuptools wheel
+	$(PYTHON_INTERPRETER) -m pip install -r tests/requirements.txt
+
 ## Make Dataset
 data: requirements
 	sh src/data/make_dataset.sh data/raw data/interim data/processed
@@ -39,7 +43,7 @@ lint:
 	flake8 src
 
 ## Autolint using black and isort
-autolint: test/requirements
+autolint: requirements_test
 	black src
 	isort src
 	flake8 src

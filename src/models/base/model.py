@@ -119,6 +119,3 @@ class PredictionModel(LightningModule):
 
     def test_epoch_end(self, outputs: torch.Tensor) -> None:
         self.epoch_end("test")
-
-
-

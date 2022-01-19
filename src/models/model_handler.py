@@ -9,6 +9,7 @@ from PIL import Image
 from torchvision.transforms import Compose
 from ts.torch_handler.base_handler import BaseHandler
 
+
 class ESM_CNN(BaseHandler):
 
     image_processing = Compose(
@@ -63,15 +64,13 @@ class ESM_CNN(BaseHandler):
         return output
 
 
-
 class MyHandler(BaseHandler):
-
     def preprocess(self, data):
         return super().preprocess(data)
 
     def inference(self, data, *args, **kwargs):
         pred = self.model(self.data)
-        
+
         return super().inference(data, *args, **kwargs)
 
     def postprocess(self, data):
