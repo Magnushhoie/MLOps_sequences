@@ -11,7 +11,9 @@ defaults:
   - model: cnn.yaml  # Defines default model hyperparameters
   - predict: default.yaml
   - experiment: null
+  - search: null  # Defines sweeping configuration
 
+batch_size: 32
 seed: null
 name: null
 test_after_train: True
