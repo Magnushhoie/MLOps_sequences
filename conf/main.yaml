@@ -11,6 +11,7 @@ defaults:
   - model: cnn.yaml  # Defines default model hyperparameters
   - predict: default.yaml
   - experiment: null
+  - search: null  # Defines sweeping configuration
 
 seed: 42
 name: mlops_peps

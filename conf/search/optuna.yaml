@@ -1,0 +1,34 @@
+# @package _global_
+
+# Add Optuna sweeper
+defaults:
+  - override /hydra/sweeper: optuna
+  - override /hydra/sweeper/sampler: random
+
+# Name of metric to optimize
+objective: "validation_accuracy"
+
+# Settings for hydra
+# SEE: https://hydra.cc/docs/next/plugins/optuna_sweeper/
+hydra:
+  sweeper:
+    _target_: hydra_plugins.hydra_optuna_sweeper.optuna_sweeper.OptunaSweeper
+    direction: maximize
+    storage: null
+    study_name: null
+    n_trials: 4
+    n_jobs: 1
+
+    # Define sampler parameters
+    sampler:
+      seed: ${seed}
+
+    # Define search space
+    search_space:
+      batch_size:
+        type: categorical
+        choices: [32, 64, 128]
+      model.lr:
+        type: float
+        low: 0.0001
+        high: 0.2
