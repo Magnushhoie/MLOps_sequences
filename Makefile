@@ -38,6 +38,12 @@ clean:
 lint:
 	flake8 src
 
+## Autolint using black and isort
+autolint: test/requirements
+	black src
+	isort src
+	flake8 src
+
 ## Upload Data to S3
 sync_data_to_s3:
 ifeq (default,$(PROFILE))
