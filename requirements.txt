@@ -15,3 +15,6 @@ torchmetrics==0.6.2
 
 hydra-core==1.1.1
 omegaconf==2.1.1
+
+optuna==2.10.0
+hydra-optuna-sweeper==1.1.1
