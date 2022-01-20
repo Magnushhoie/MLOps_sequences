@@ -1,7 +1,7 @@
-/testset.csv
-/trainset.csv
-/validset.csv
 /pca_train.pt
 /testset.pt
 /trainset.pt
 /validset.pt
+/testset.csv
+/trainset.csv
+/validset.csv

@@ -80,7 +80,6 @@ target/
 # Jupyter NB Checkpoints
 .ipynb_checkpoints/
 
-
 # exclude Hydra/WandB outputs from source control
 /outputs/
 /multirun/
