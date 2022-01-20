@@ -80,7 +80,10 @@ def main(input_filepath, interim_filepath):
     # Check and pre-process sequences
     for fastaList, outName in zip(fasta_list_list, outName_list):
         if len(fastaList) == 0:
-            raise Exception("No FASTA files found in {input_filepath}/{outName}")
+            raise ValueError(textwrap.fill(width=100, text = textwrap.dedent(f"""
+            No FASTA files found in directory {input_filepath+outName[:-6]}.
+            Did you download the dataset with 'dvc pull'?
+            """)))
 
         de_duplicate_FASTA_files(fastaList, outName, interim_filepath)
 
