@@ -3,6 +3,7 @@ import glob
 import logging
 from pathlib import Path
 
+import textwrap
 import click
 from Bio import SeqIO
 from dotenv import find_dotenv, load_dotenv
