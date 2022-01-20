@@ -1,0 +1,4 @@
+outs:
+- md5: b1753de00ba0e96c19dd632f841619c1
+  size: 18100263
+  path: trainset.pt

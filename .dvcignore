@@ -1,9 +1,0 @@
-# Add patterns of files dvc should ignore, which could improve
-# the performance. Learn more at
-# https://dvc.org/doc/user-guide/dvcignore
-
-data/interim
-data/processed/test_pos/*
-data/processed/test_neg/*
-data/processed/train_pos/*
-data/processed/train_neg/*

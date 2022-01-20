@@ -1,0 +1,4 @@
+outs:
+- md5: 1718af5bd2e8f254f656c1b9d967e9ae
+  size: 2004775
+  path: validset.pt
