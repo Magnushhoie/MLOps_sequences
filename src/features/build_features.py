@@ -1,6 +1,7 @@
 __all__ = ["SequenceEmbedder"]
 
 from os import PathLike
+from pathlib import Path
 from typing import List, Tuple
 
 import esm
@@ -10,7 +11,7 @@ from torch.utils.data import DataLoader
 
 from src.path import ROOT_PATH
 
-PCA_PATH = ROOT_PATH / "data" / "processed" / "pca_train.pt"
+PCA_PATH = Path(ROOT_PATH, "data", "processed", "pca_train.pt")
 
 
 class SequenceEmbedder:
