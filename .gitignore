@@ -2,8 +2,8 @@
 !.dvc
 .dvc/tmp/*credentials.json
 /tmp/
-data/interim/*
-data/processed/**/
+/data/interim/*
+/data/processed/**/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
