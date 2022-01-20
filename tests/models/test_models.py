@@ -32,7 +32,7 @@ def test_step(model_name):
     # Confirm the training/validation steps return a single value
     dummy_batch = (
         torch.randn(1, SEQUENCE_LEN, EMBEDDING_SIZE),
-        torch.randint(high=2, size=(1, 1))
+        torch.randint(high=2, size=(1, ))
     )
     model = create_dummy_model(model_name)()
     loss = model.step(dummy_batch, "training")
