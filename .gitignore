@@ -2,7 +2,6 @@
 !.dvc
 .dvc/tmp/*credentials.json
 /tmp/
-data/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
@@ -81,8 +80,6 @@ target/
 # Jupyter NB Checkpoints
 .ipynb_checkpoints/
 
-# exclude data from source control by default
-/data/
 
 # exclude Hydra/WandB outputs from source control
 /outputs/
@@ -98,4 +95,3 @@ target/
 
 # Mypy cache
 .mypy_cache/
-/data

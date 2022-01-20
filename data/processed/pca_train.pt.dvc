@@ -1,0 +1,4 @@
+outs:
+- md5: 9680649b3c71bbf4ff03265033deafa1
+  size: 579887
+  path: pca_train.pt
