@@ -44,7 +44,6 @@ class PredictionModel(LightningModule):
         """
         # Do forward pass
         x, y = batch
-        # print(x.shape)
         logits = self(x)
 
         # Calculate loss and predictions
@@ -85,17 +84,17 @@ class PredictionModel(LightningModule):
         mcc = getattr(self, f"{mode}_mcc")
         mcc_value = mcc.compute()
 
-        # Compute accuracy, recall, precision and F1 score
+        # Compute accuracy, recall, precision
         accuracy = (tn + tp) / (tn + fp + fn + tp)
         recall = tp / (tp + fn)
         precision = tp / (tp + fp)
 
         # Log metrics
-        self.log(f"{mode}_accuracy", accuracy)
-        self.log(f"{mode}_recall", recall)
-        self.log(f"{mode}_precision", precision)
-        self.log(f"{mode}_auroc", auroc_value)
-        self.log(f"{mode}_mcc", mcc_value)
+        self.log(f"{mode}_accuracy", accuracy, on_step=False, on_epoch=True)
+        self.log(f"{mode}_recall", recall, on_step=False, on_epoch=True)
+        self.log(f"{mode}_precision", precision, on_step=False, on_epoch=True)
+        self.log(f"{mode}_auroc", auroc_value, on_step=False, on_epoch=True)
+        self.log(f"{mode}_mcc", mcc_value, on_step=False, on_epoch=True)
 
         # Reset confusion matrix so it is recalculated for next epoch
         confmat.reset()

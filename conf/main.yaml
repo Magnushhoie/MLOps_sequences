@@ -14,6 +14,6 @@ defaults:
   - search: null  # Defines sweeping configuration
 
 seed: 42
-name: mlops_peps
+name: mlops_antimb
 test_after_train: True
 batch_size: 64

@@ -5,13 +5,12 @@ from pathlib import Path
 from omegaconf import DictConfig
 from pytorch_lightning import LightningModule, seed_everything, Trainer
 from pytorch_lightning.callbacks import ModelCheckpoint
+from pytorch_lightning.callbacks.early_stopping import EarlyStopping
 from pytorch_lightning.loggers import WandbLogger
 
-from src.path import ROOT_PATH, CONF_PATH, WEIGHTS_PATH
+from src.data.data_module import PepDataModule
 
-# Automagically find path to config files
-# CONF_PATH = Path(find_dotenv(), "../..", "conf").as_posix()
-# CONF_PATH = Path(os.getcwd(),"conf")
+from src.path import ROOT_PATH, CONF_PATH, WEIGHTS_PATH
 
 
 @hydra.main(config_path=CONF_PATH, config_name="main")
@@ -51,44 +50,50 @@ def train(config: DictConfig) -> float:
         dataset = TensorDataset(inputs, targets)
         return DataLoader(dataset, batch_size=config.batch_size)
     
-    train_dataset = torch.load(Path(ROOT_PATH, "data/processed/trainset.pt"))
-    valid_dataset = torch.load(Path(ROOT_PATH, "data/processed/validset.pt"))
-    train_dataloader = DataLoader(train_dataset, batch_size=config.batch_size, num_workers=8)
-    valid_dataloader = DataLoader(valid_dataset, batch_size=config.batch_size, num_workers=8)
-
-    if config.test_after_train:
-        test_dataset = torch.load(Path(ROOT_PATH, "data/processed/testset.pt"))
-        test_dataloader = DataLoader(test_dataset, batch_size=config.batch_size, num_workers=8)
+    # train_dataset = torch.load(Path(ROOT_PATH, "data/processed/trainset.pt"))
+    # valid_dataset = torch.load(Path(ROOT_PATH, "data/processed/validset.pt"))
+    # train_dataloader = DataLoader(train_dataset, batch_size=config.batch_size)
+    # valid_dataloader = DataLoader(valid_dataset, batch_size=config.batch_size)
+   
+    # if config.test_after_train:
+    #     test_dataset = torch.load(Path(ROOT_PATH, "data/processed/testset.pt"))
+    #     test_dataloader = DataLoader(test_dataset, batch_size=config.batch_size, num_workers=8)
 
     # Initialize logger
-    logger = WandbLogger(name="optuna", project="MLOps_Sequences", log_model=True)
+    logger = WandbLogger(name=config.name, project="MLOps_Sequences", id=config.name, log_model=True)
 
     # Initialize model
     model: LightningModule = hydra.utils.instantiate(config.model)
 
+    # Define model checkpoints and early stopping
     checkpoint_callback = ModelCheckpoint(
-        monitor='validation_loss_epoch', 
-        save_on_train_epoch_end=True,
+        monitor='validation_loss', 
+        save_on_train_epoch_end=False,
         dirpath=WEIGHTS_PATH,
         filename='cnn_model'
     )
+
+    early_stopping=  EarlyStopping(monitor="validation_loss", mode="min", patience=3)
+    
+    # Create train/valid/test dataloaders
+    pep_data = PepDataModule(data_dir=ROOT_PATH, batch_size=config.batch_size, n_workers=0)
 
     # Initialize trainer
     trainer: Trainer = hydra.utils.instantiate(
         config.training, 
         deterministic=deterministic, 
         logger=logger, 
-        weights_save_path=WEIGHTS_PATH
-        # callbacks=[checkpoint_callback]
+        weights_save_path=WEIGHTS_PATH,
+        callbacks=[early_stopping],
         )
 
-    trainer.fit(model, train_dataloader, valid_dataloader)
+    trainer.fit(model, pep_data)
 
     # Retrieve score (required if sweeping)
     score = trainer.callback_metrics.get(config.get("objective"))
 
     if config.test_after_train:
-        trainer.test(model, test_dataloader)
+        trainer.test(model, pep_data)
 
     # Finish
     wandb.finish()
