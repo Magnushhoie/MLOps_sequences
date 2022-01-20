@@ -7,7 +7,7 @@ import torch
 from omegaconf import DictConfig
 
 from src.features.build_features import SequenceEmbedder
-from src.path import checkpoint_path, ROOT_PATH
+from src.path import ROOT_PATH, checkpoint_path
 
 # Automagically find path to config files
 # CONF_PATH = Path(find_dotenv(), "../..", "conf").as_posix()
