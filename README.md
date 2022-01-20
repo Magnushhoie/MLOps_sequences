@@ -144,7 +144,7 @@ point on the checklist for the exam.
 - [X] Create a presentation explaining your project
 - [X] Uploaded all your code to github
 - [ ] (extra) Implemented pre-commit hooks for your project repository
-- [ ] (extra) Used Optuna to run hyperparameter optimization on your model
+- [X] (extra) Used Optuna to run hyperparameter optimization on your model
 
 --------
 
