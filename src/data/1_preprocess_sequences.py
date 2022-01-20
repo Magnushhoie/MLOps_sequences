@@ -3,6 +3,7 @@ import glob
 import logging
 from pathlib import Path
 
+import os
 import textwrap
 import click
 from Bio import SeqIO
@@ -22,7 +23,9 @@ def de_duplicate_FASTA_files(fastaList, outName, interimDir="data/interim/", v=1
         global dict_seqs, dict_ids, count_entries, no_duplicates
         dict_seqs, dict_ids, count_entries, no_duplicates = {}, {}, 0, 0
 
+    os.makedirs(interimDir, exist_ok=True)
     outFasta = interimDir + outName
+    
 
     # Find train and test fasta files in raw
     print("Checking for duplicate sequences in:\n", fastaList, end="\n")
