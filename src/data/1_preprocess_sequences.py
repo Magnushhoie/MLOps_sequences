@@ -64,10 +64,10 @@ def main(input_filepath, interim_filepath):
     logger.info("making final data set from raw data")
 
     # Get training and testing FASTAs
-    test_pos_list = glob.glob(input_filepath + "test/pos/*.fasta")
-    test_neg_list = glob.glob(input_filepath + "test/neg/*.fasta")
-    train_pos_list = glob.glob(input_filepath + "train/pos/*.fasta")
-    train_neg_list = glob.glob(input_filepath + "train/neg/*.fasta")
+    test_pos_list = glob.glob(input_filepath + "test_pos/*.fasta")
+    test_neg_list = glob.glob(input_filepath + "test_neg/*.fasta")
+    train_pos_list = glob.glob(input_filepath + "train_pos/*.fasta")
+    train_neg_list = glob.glob(input_filepath + "train_neg/*.fasta")
 
     fasta_list_list = [test_pos_list, test_neg_list, train_pos_list, train_neg_list]
     outName_list = [

@@ -8,6 +8,7 @@ for fastaFile in "$inDir"/*.fasta; do
     dirName=$(basename "$fastaFile")
     dirName="${dirName%.*}"
     outDir="$inDir/$dirName"
+    mkdir -p $outDir
 
     python src/data/extract.py $esm_model "$fastaFile" "$outDir" \
         --repr_layers -1 --include per_tok
