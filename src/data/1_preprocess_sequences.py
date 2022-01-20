@@ -77,8 +77,11 @@ def main(input_filepath, interim_filepath):
         "train_neg.fasta",
     ]
 
-    # Preprocess sequences
+    # Check and pre-process sequences
     for fastaList, outName in zip(fasta_list_list, outName_list):
+        if len(fastaList) == 0:
+            raise Exception("No FASTA files found in {input_filepath}/{outName}")
+
         de_duplicate_FASTA_files(fastaList, outName, interim_filepath)
 
     # Print statistics

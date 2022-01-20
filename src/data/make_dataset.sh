@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e # Exit on error
 
 # Params
 rawDir=${1:-"data/raw"}
