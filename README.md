@@ -124,14 +124,14 @@ point on the checklist for the exam.
 - [X] (optional) Create a new project on `gcp` and invite all group members to it
 - [X] Create a data storage on `gcp` for you data
 - [ ] Create a trigger workflow for automatically building your docker images
-- [ ] Get your model training on `gcp`
+- [X] Get your model training on `gcp`
 - [X] Play around with distributed data loading
 - [X] (optional) Play around with distributed model training
 - [ ] Play around with quantization and compilation for you trained models
 
 ### Week 3
 
-- [ ] Deployed your model locally using TorchServe
+- [X] Deployed your model locally using TorchServe
 - [ ] Checked how robust your model is towards data drifting
 - [ ] Deployed your model using `gcp`
 - [ ] Monitored the system of your deployed model
