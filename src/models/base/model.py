@@ -1,7 +1,6 @@
 __all__ = ["PredictionModel"]
 
 import torch
-import torch.nn.functional as F
 from pytorch_lightning import LightningModule
 from torch import nn
 from torchmetrics import AUROC, ConfusionMatrix, MatthewsCorrCoef
@@ -47,7 +46,7 @@ class PredictionModel(LightningModule):
         # Do forward pass
         x, y = batch
         logits = self(x)
-        probs = F.sigmoid(logits)
+        probs = torch.sigmoid(logits)
 
         # Calculate loss and predictions
         criterion = nn.BCEWithLogitsLoss()
@@ -59,7 +58,7 @@ class PredictionModel(LightningModule):
         getattr(self, f"{mode}_confmat")(preds, y)
 
         # Update AUROC
-        getattr(self, f"{mode}_auroc")(preds, y)
+        getattr(self, f"{mode}_auroc")(logits, y)
 
         # Update MCC
         getattr(self, f"{mode}_mcc")(preds, y)
