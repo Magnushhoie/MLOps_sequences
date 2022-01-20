@@ -1,15 +1,16 @@
 __all__ = ["PredictionModel"]
 
 import torch
+import torch.nn.functional as F
 from pytorch_lightning import LightningModule
 from torch import nn
-import torch.nn.functional as F
-from torchmetrics import ConfusionMatrix, AUROC, MatthewsCorrCoef
+from torchmetrics import AUROC, ConfusionMatrix, MatthewsCorrCoef
 
 
 class PredictionModel(LightningModule):
     """Base class for prediction models, defines logic at each training step and
     epoch."""
+
     def __init__(self):
         super().__init__()
         self.training_confmat = ConfusionMatrix(num_classes=2)
@@ -28,7 +29,7 @@ class PredictionModel(LightningModule):
         return torch.optim.Adam(
             self.parameters(),
             weight_decay=self.hparams.weight_decay,
-            lr=self.hparams.lr
+            lr=self.hparams.lr,
         )
 
     def step(self, batch: torch.Tensor, mode: str) -> torch.Tensor:
@@ -64,9 +65,7 @@ class PredictionModel(LightningModule):
         getattr(self, f"{mode}_mcc")(preds, y)
 
         # Log loss at every step
-        self.log(
-            f"{mode}_loss", loss, on_step=True, on_epoch=True, prog_bar=True
-        )
+        self.log(f"{mode}_loss", loss, on_step=True, on_epoch=True, prog_bar=True)
         return loss
 
     def epoch_end(self, mode: str) -> None:

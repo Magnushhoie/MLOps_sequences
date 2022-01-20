@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 import glob
 import logging
-from pathlib import Path
-
 import os
 import textwrap
+from pathlib import Path
+
 import click
 from Bio import SeqIO
 from dotenv import find_dotenv, load_dotenv
@@ -25,7 +25,6 @@ def de_duplicate_FASTA_files(fastaList, outName, interimDir="data/interim/", v=1
 
     os.makedirs(interimDir, exist_ok=True)
     outFasta = interimDir + outName
-    
 
     # Find train and test fasta files in raw
     print("Checking for duplicate sequences in:\n", fastaList, end="\n")
@@ -84,10 +83,17 @@ def main(input_filepath, interim_filepath):
     # Check and pre-process sequences
     for fastaList, outName in zip(fasta_list_list, outName_list):
         if len(fastaList) == 0:
-            raise ValueError(textwrap.fill(width=100, text = textwrap.dedent(f"""
+            raise ValueError(
+                textwrap.fill(
+                    width=100,
+                    text=textwrap.dedent(
+                        f"""
             No FASTA files found in directory {input_filepath+outName[:-6]}.
             Did you download the dataset with 'dvc pull'?
-            """)))
+            """
+                    ),
+                )
+            )
 
         de_duplicate_FASTA_files(fastaList, outName, interim_filepath)
 

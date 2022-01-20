@@ -65,10 +65,7 @@ def predict(config: DictConfig):
     preds = (probs > 0.5).flatten().tolist()
 
     # Print results
-    results = pd.DataFrame(dict(
-        sequences=sequences,
-        is_antimicrobial=preds
-    ))
+    results = pd.DataFrame(dict(sequences=sequences, is_antimicrobial=preds))
     output_file = input_file.parent / f"predictions_{input_file.name}"
     results.to_csv(output_file, index=False)
     print(f"Predictions saved at: {input_file}")

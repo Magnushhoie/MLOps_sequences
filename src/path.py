@@ -5,7 +5,7 @@ from pathlib import Path
 from dotenv import find_dotenv
 
 ROOT_PATH = Path(find_dotenv()).parent
-#ROOT_PATH = os.getcwd()
+# ROOT_PATH = os.getcwd()
 
 CONF_PATH = Path(ROOT_PATH, "conf")
 WEIGHTS_PATH = Path(ROOT_PATH, "models")

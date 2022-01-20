@@ -14,12 +14,12 @@ class MyHandler(BaseHandler):
 
         for fd in data:
             fasta = fd.get("data")
-    
+
             if fasta is None:
                 fasta = fd.get("body")
-            
+
             if isinstance(fasta, (bytes, bytearray)):
-                fasta = fasta.decode('utf-8')
+                fasta = fasta.decode("utf-8")
 
             with open("tmp.fasta", "w") as tmp:
                 tmp.write(fasta)
