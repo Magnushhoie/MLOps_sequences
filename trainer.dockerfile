@@ -20,4 +20,7 @@ WORKDIR /
 RUN pip install -r requirements.txt --no-cache-dir
 
 RUN chmod +x /run.sh
+ENV WANDB_MODE=disabled
+ENV WANDB_DISABLE_CODE=true
+
 ENTRYPOINT ["/bin/bash", "/run.sh"]

@@ -4,6 +4,7 @@ from pathlib import Path
 import hydra
 import pandas as pd
 import torch
+import torch.nn.functional as F
 from omegaconf import DictConfig
 
 from src.features.build_features import SequenceEmbedder
@@ -60,7 +61,7 @@ def predict(config: DictConfig):
     with torch.no_grad():
         logits = model(batch)
 
-    probs = logits.exp()
+    probs = F.sigmoid(logits)
     preds = (probs > 0.5).flatten().tolist()
 
     # Print results

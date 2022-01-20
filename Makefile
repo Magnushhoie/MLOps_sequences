@@ -35,6 +35,9 @@ data: requirements
 
 ## Make training
 train: requirements
+	[[ -f .env ]] || touch .env
+	export WANDB_MODE=disabled
+	export WANDB_DISABLE_CODE=true
 	$(PYTHON_INTERPRETER) src/models/train_model.py
 
 ## Delete all compiled Python files
