@@ -1,3 +1,4 @@
 #/bin/bash
-make data
+touch .env
+#make data
 make train

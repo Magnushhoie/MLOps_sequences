@@ -35,6 +35,7 @@ data: requirements
 
 ## Make training
 train: requirements
+	[[ -f .env ]] || touch .env
 	$(PYTHON_INTERPRETER) src/models/train_model.py
 
 ## Delete all compiled Python files
