@@ -1,0 +1,4 @@
+outs:
+- md5: dbd5c93e1a3e67c9bbb4aa6532ad9171
+  size: 124540
+  path: trainset.csv

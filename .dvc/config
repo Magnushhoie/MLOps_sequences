@@ -1,6 +1,4 @@
 [core]
     remote = storage
-['remote "myremote"']
-    url = s3://mlopsmh/MLOps_sequences
 ['remote "storage"']
-    url = gdrive://1uggucTJ697SJ82IB2acmmqjyEWnkHcCD
+    url = gdrive://1Zsp2JeCCCagtfL4ga7wi_rL2e4CnoczM

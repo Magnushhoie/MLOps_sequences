@@ -1,6 +1,7 @@
 import pathlib
 import hydra
 import wandb
+import os
 from pathlib import Path
 from omegaconf import DictConfig
 from pytorch_lightning import LightningModule, seed_everything, Trainer
@@ -40,6 +41,8 @@ def train(config: DictConfig) -> float:
     # Initialize dataset (with dummy inputs/targets)
     import torch
     from torch.utils.data import DataLoader, TensorDataset
+
+    os.makedirs(WEIGHTS_PATH, exist_ok=True)
 
     sequence_len = 30
     embedding_size = 60
