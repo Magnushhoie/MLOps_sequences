@@ -2,12 +2,12 @@ import os
 from pathlib import Path
 
 import hydra
-import wandb
+import pandas as pd
+import torch
 from omegaconf import DictConfig
-from pytorch_lightning import seed_everything
-from pytorch_lightning.loggers import WandbLogger
 
-from src.path import checkpoint_path
+from src.features.build_features import SequenceEmbedder
+from src.path import checkpoint_path, ROOT_PATH
 
 # Automagically find path to config files
 # CONF_PATH = Path(find_dotenv(), "../..", "conf").as_posix()
@@ -29,30 +29,14 @@ def predict(config: DictConfig):
     --------
     From command line:
 
-    $ python src/models/predict_model.py experiment=test
+    $ python src/models/predict_model.py experiment=test predict.input_file=test.fasta
     """
-    # Set seed to ensure reproducibility
-    deterministic = config.seed is not None
-    if deterministic:
-        seed_everything(config.seed, workers=True)
+    # CURRENTLY ONLY TAKES FILES SOMEWHERE IN THE ROOT FOLDER, HAS TO CHANGE
+    input_file = ROOT_PATH / Path(config.predict.input_file)
 
-    # Initialize dataset (with dummy inputs/targets)
-    import torch
-    from torch.utils.data import DataLoader, TensorDataset
-
-    sequence_len = 30
-    embedding_size = 60
-
-    def get_dummy_dataloader(num_samples):
-        inputs = torch.randn(num_samples, sequence_len, embedding_size)
-        targets = (torch.randn(num_samples, 1) > 0.5).int()
-        dataset = TensorDataset(inputs, targets)
-        return DataLoader(dataset, batch_size=32, num_workers=5)
-
-    predict_dataloader = get_dummy_dataloader(100)
-
-    # Initialize logger
-    logger = WandbLogger(name=config.name, project="MLOps_Sequences", log_model=False)
+    # Build features
+    embedder = SequenceEmbedder()
+    sequences, batch = embedder.embed(input_file)
 
     # Initialize model
     model = hydra.utils.instantiate(config.model)
@@ -66,16 +50,27 @@ def predict(config: DictConfig):
     # # Load model checkpoint
     # model = model.load_from_checkpoint(Path(artifact_dir, "model.ckpt"))
     model = model.load_from_checkpoint(
-        checkpoint_path(project="MLOps_Sequences", experiment="mlops_peps")
+        checkpoint_path(project="MLOps_Sequences", experiment=config.name)
     )
+    # Make sure weights do not get updated
+    model.eval()
+    model.freeze()
 
-    trainer = hydra.utils.instantiate(
-        config.training, deterministic=deterministic, logger=logger
-    )
-    trainer.test(model, predict_dataloader)
+    # Predict
+    with torch.no_grad():
+        logits = model(batch)
 
-    # Finish
-    wandb.finish()
+    probs = logits.exp()
+    preds = (probs > 0.5).flatten().tolist()
+
+    # Print results
+    results = pd.DataFrame(dict(
+        sequences=sequences,
+        is_antimicrobial=preds
+    ))
+    output_file = input_file.parent / f"predictions_{input_file.name}"
+    results.to_csv(output_file, index=False)
+    print(f"Predictions saved at: {input_file}")
 
 
 if __name__ == "__main__":
